@@ -1,8 +1,9 @@
 # egui_nodes
 
- A egui port of https://github.com/Nelarius/imnodes 
+A egui port of https://github.com/Nelarius/imnodes 
  
 ### Example
+
 ``` rust
 pub fn example_graph(ctx: &mut Context, links: &mut Vec<(usize, usize)>, ui: &mut Ui) {
     // add nodes with attributes
@@ -38,4 +39,4 @@ pub fn example_graph(ctx: &mut Context, links: &mut Vec<(usize, usize)>, ui: &mu
 }
 ```
  
- <img src="media/example.gif">
+![example](./media/example.gif)
