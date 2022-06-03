@@ -165,9 +165,9 @@ impl Context {
                 egui::Layout::top_down(egui::Align::Center),
             );
             {
-                let ui = &mut ui;
+                let screen_rect = ui.ctx().input().screen_rect();
                 ui.set_clip_rect(
-                    self.canvas_rect_screen_space.intersect(ui.ctx().input().screen_rect()),
+                    self.canvas_rect_screen_space.intersect(screen_rect),
                 );
                 ui.painter().rect_filled(
                     self.canvas_rect_screen_space,
@@ -176,12 +176,12 @@ impl Context {
                 );
 
                 if (self.style.flags & StyleFlags::GridLines as usize) != 0 {
-                    self.draw_grid(self.canvas_rect_screen_space.size(), ui);
+                    self.draw_grid(self.canvas_rect_screen_space.size(), &mut ui);
                 }
 
                 let links = links.into_iter().collect::<Vec<_>>();
                 for (id, start, end, args) in links {
-                    self.add_link(id, start, end, args, ui);
+                    self.add_link(id, start, end, args, &mut ui);
                 }
 
                 let mut nodes = nodes
@@ -190,7 +190,7 @@ impl Context {
                     .collect::<HashMap<_, _>>();
                 for idx in self.node_depth_order.clone() {
                     if let Some(node_builder) = nodes.remove(&idx) {
-                        self.add_node(idx, node_builder, ui);
+                        self.add_node(idx, node_builder, &mut ui);
                     }
                 }
             }
