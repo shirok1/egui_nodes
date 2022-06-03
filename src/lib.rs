@@ -109,7 +109,7 @@ pub struct Context {
     left_mouse_dragging: bool,
     alt_mouse_dragging: bool,
     mouse_in_canvas: bool,
-    link_detatch_with_modifier_click: bool,
+    link_detach_with_modifier_click: bool,
 
     nodes: ObjectPool<NodeData>,
     pins: ObjectPool<PinData>,
@@ -224,8 +224,8 @@ impl Context {
                     (self.alt_mouse_clicked || self.alt_mouse_dragging) && alt_mouse_clicked;
                 self.alt_mouse_clicked =
                     alt_mouse_clicked && !(self.alt_mouse_clicked || self.alt_mouse_dragging);
-                self.link_detatch_with_modifier_click =
-                    self.io.link_detatch_with_modifier_click.is_active(&io.modifiers);
+                self.link_detach_with_modifier_click =
+                    self.io.link_detach_with_modifier_click.is_active(&io.modifiers);
             }
             {
                 let ui = &mut ui;
@@ -273,7 +273,7 @@ impl Context {
         }
     }
 
-    /// Push a sigle AttributeFlags value, by default only None is set.
+    /// Push a single AttributeFlags value, by default only None is set.
     /// Used for pins that don't have a specific attribute flag specified
     pub fn attribute_flag_push(&mut self, flag: AttributeFlags) {
         self.attribute_flag_stack.push(self.current_attribute_flags);
@@ -326,7 +326,7 @@ impl Context {
 
     pub fn set_node_pos_editor_space(&mut self, node_id: usize, editor_space_pos: egui::Pos2) {
         let idx = self.node_pool_find_or_create_index(node_id, None);
-        self.nodes.pool[idx].origin = self.editor_space_to_grid_spcae(editor_space_pos);
+        self.nodes.pool[idx].origin = self.editor_space_to_grid_space(editor_space_pos);
     }
 
     pub fn set_node_pos_grid_space(&mut self, node_id: usize, grid_pos: egui::Pos2) {
@@ -344,7 +344,7 @@ impl Context {
     }
 
     pub fn get_node_pos_editor_space(&self, node_id: usize) -> Option<egui::Pos2> {
-        self.nodes.find(node_id).map(|x| self.grid_space_to_editor_spcae(self.nodes.pool[x].origin))
+        self.nodes.find(node_id).map(|x| self.grid_space_to_editor_space(self.nodes.pool[x].origin))
     }
 
     pub fn get_node_pos_grid_space(&self, node_id: usize) -> Option<egui::Pos2> {
@@ -480,7 +480,7 @@ impl Context {
         self.panning
     }
 
-    pub fn reset_panniing(&mut self, panning: egui::Vec2) {
+    pub fn reset_panning(&mut self, panning: egui::Vec2) {
         self.panning = panning;
     }
 
@@ -655,11 +655,11 @@ impl Context {
         v + self.canvas_origin_screen_space + self.panning
     }
 
-    fn grid_space_to_editor_spcae(&self, v: egui::Pos2) -> egui::Pos2 {
+    fn grid_space_to_editor_space(&self, v: egui::Pos2) -> egui::Pos2 {
         v + self.panning
     }
 
-    fn editor_space_to_grid_spcae(&self, v: egui::Pos2) -> egui::Pos2 {
+    fn editor_space_to_grid_space(&self, v: egui::Pos2) -> egui::Pos2 {
         v - self.panning
     }
 
@@ -1188,7 +1188,7 @@ impl Context {
                 self.click_interaction_state.link_creation.link_creation_type =
                     LinkCreationType::FromDetach;
             }
-        } else if self.link_detatch_with_modifier_click {
+        } else if self.link_detach_with_modifier_click {
             let link = &self.links.pool[idx];
             let start_pin = &self.pins.pool[link.start_pin_index];
             let end_pin = &self.pins.pool[link.end_pin_index];
@@ -1316,17 +1316,17 @@ impl StyleElement {
     }
 }
 
-/// This controls the modifers needed for certain mouse interactions
+/// This controls the modifiers needed for certain mouse interactions
 #[derive(Derivative, Debug)]
 #[derivative(Default)]
 pub struct IO {
-    /// The Modfier that needs to pressed to pan the editor
+    /// The Modifier that needs to pressed to pan the editor
     #[derivative(Default(value = "Modifiers::None"))]
     pub emulate_three_button_mouse: Modifiers,
 
-    // The Modifier that needs to be pressed to detatch a link instead of creating a new one
+    // The Modifier that needs to be pressed to detach a link instead of creating a new one
     #[derivative(Default(value = "Modifiers::None"))]
-    pub link_detatch_with_modifier_click: Modifiers,
+    pub link_detach_with_modifier_click: Modifiers,
 
     // The mouse button that pans the editor. Should probably not be set to Primary.
     #[derivative(Default(value = "Some(egui::PointerButton::Middle)"))]
@@ -1337,7 +1337,7 @@ pub struct IO {
 #[derive(Debug)]
 pub enum Modifiers {
     Alt,
-    Crtl,
+    Ctrl,
     Shift,
     Command,
     None,
@@ -1347,7 +1347,7 @@ impl Modifiers {
     fn is_active(&self, mods: &egui::Modifiers) -> bool {
         match self {
             Modifiers::Alt => mods.alt,
-            Modifiers::Crtl => mods.ctrl,
+            Modifiers::Ctrl => mods.ctrl,
             Modifiers::Shift => mods.shift,
             Modifiers::Command => mods.command,
             Modifiers::None => false,

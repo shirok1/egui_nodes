@@ -282,14 +282,14 @@ impl Style {
                 let sqrt_3 = 3f32.sqrt();
                 let left_offset = -0.166_666_7 * sqrt_3 * self.pin_triangle_side_length;
                 let right_offset = 0.333_333_3 * sqrt_3 * self.pin_triangle_side_length;
-                let verticacl_offset = 0.5 * self.pin_triangle_side_length;
+                let vertical_offset = 0.5 * self.pin_triangle_side_length;
                 painter.set(
                     shape,
                     egui::Shape::closed_line(
                         vec![
-                            pin_pos + (left_offset, verticacl_offset).into(),
+                            pin_pos + (left_offset, vertical_offset).into(),
                             pin_pos + (right_offset, 0.0).into(),
-                            pin_pos + (left_offset, -verticacl_offset).into(),
+                            pin_pos + (left_offset, -vertical_offset).into(),
                         ],
                         (self.pin_line_thickness, pin_color),
                     ),
@@ -299,14 +299,14 @@ impl Style {
                 let sqrt_3 = 3f32.sqrt();
                 let left_offset = -0.166_666_7 * sqrt_3 * self.pin_triangle_side_length;
                 let right_offset = 0.333_333_3 * sqrt_3 * self.pin_triangle_side_length;
-                let verticacl_offset = 0.5 * self.pin_triangle_side_length;
+                let vertical_offset = 0.5 * self.pin_triangle_side_length;
                 painter.set(
                     shape,
                     egui::Shape::convex_polygon(
                         vec![
-                            pin_pos + (left_offset, verticacl_offset).into(),
+                            pin_pos + (left_offset, vertical_offset).into(),
                             pin_pos + (right_offset, 0.0).into(),
-                            pin_pos + (left_offset, -verticacl_offset).into(),
+                            pin_pos + (left_offset, -vertical_offset).into(),
                         ],
                         pin_color,
                         egui::Stroke::none(),
