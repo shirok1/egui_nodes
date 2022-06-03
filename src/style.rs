@@ -22,6 +22,10 @@ pub enum ColorStyle {
     Count,
 }
 
+impl ColorStyle {
+    pub const SIZE: usize = Self::Count as usize;
+}
+
 /// Represents different style values used by a Context
 #[derive(Debug, Clone, Copy)]
 pub enum StyleVar {
@@ -51,8 +55,8 @@ pub enum StyleFlags {
 
 impl ColorStyle {
     /// dark color style
-    pub fn colors_dark() -> [egui::Color32; ColorStyle::Count as usize] {
-        let mut colors = [egui::Color32::BLACK; ColorStyle::Count as usize];
+    pub fn colors_dark() -> [egui::Color32; ColorStyle::SIZE] {
+        let mut colors = [egui::Color32::BLACK; ColorStyle::SIZE];
         colors[ColorStyle::NodeBackground as usize] =
             egui::Color32::from_rgba_unmultiplied(50, 50, 50, 255);
         colors[ColorStyle::NodeBackgroundHovered as usize] =
@@ -88,8 +92,8 @@ impl ColorStyle {
     }
 
     /// classic color style
-    pub fn colors_classic() -> [egui::Color32; ColorStyle::Count as usize] {
-        let mut colors = [egui::Color32::BLACK; ColorStyle::Count as usize];
+    pub fn colors_classic() -> [egui::Color32; ColorStyle::SIZE] {
+        let mut colors = [egui::Color32::BLACK; ColorStyle::SIZE];
         colors[ColorStyle::NodeBackground as usize] =
             egui::Color32::from_rgba_unmultiplied(50, 50, 50, 255);
         colors[ColorStyle::NodeBackgroundHovered as usize] =
@@ -125,8 +129,8 @@ impl ColorStyle {
     }
 
     /// light color style
-    pub fn colors_light() -> [egui::Color32; ColorStyle::Count as usize] {
-        let mut colors = [egui::Color32::BLACK; ColorStyle::Count as usize];
+    pub fn colors_light() -> [egui::Color32; ColorStyle::SIZE] {
+        let mut colors = [egui::Color32::BLACK; ColorStyle::SIZE];
         colors[ColorStyle::NodeBackground as usize] =
             egui::Color32::from_rgba_unmultiplied(240, 240, 240, 255);
         colors[ColorStyle::NodeBackgroundHovered as usize] =
@@ -190,7 +194,7 @@ pub struct Style {
     pub pin_offset: f32,
 
     pub flags: usize,
-    pub colors: [egui::Color32; ColorStyle::Count as usize],
+    pub colors: [egui::Color32; ColorStyle::SIZE],
 }
 
 impl Default for Style {
